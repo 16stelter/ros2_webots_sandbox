@@ -1,0 +1,69 @@
+#VRML_SIM R2023b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "../protos/robots/leo_common/LeoSim.proto"
+EXTERNPROTO "../protos/supervisor/Supervisor.proto"
+
+WorldInfo {
+  info [
+    "Description: The sandbox environment with a single LEO Rover."
+    "Version 0.1"
+  ]
+  basicTimeStep 8
+  physicsDisableTime 0.1
+}
+Viewpoint {
+  orientation 0.14797960862009438 0.9877429569744367 -0.04965769205309319 0.4620915661896715
+  position -3.642672199116835 -1.6668616532254301 3.1760567848683268
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+
+DEF Sandbox Solid {
+  children [
+    Pose {
+      rotation 1 0 0 1.57
+      children [
+        DEF boxShape CadShape {
+          url [
+            "../protos/TESTBENCH.obj"
+          ]
+        }
+      ]
+    }
+  ]
+  name "sandbox"
+  boundingObject Pose {
+    rotation 1 0 0 1.57
+    children Mesh {
+      url "../protos/TESTBENCH.stl"
+    }
+  }
+}
+
+DEF leo1 LeoSim {
+  hidden translation_1 2.3776652335882886e-07 -1.246231697837885e-07 0.19735741869891987
+  hidden rotation_1 0.46421667457453575 0.8857216713206012 -1.91079304117043e-08 8.453030034545347e-06
+  hidden position_1_0 8.637875473522893e-08
+  hidden position_1_1 -8.63846777557455e-08
+  hidden rotation_2 -4.3189377367614445e-08 7.48062056883831e-15 0.9999999999999992 3.141593
+  hidden position_2_0 -6.75485922711859e-08
+  hidden position_2_1 -6.7548582686247e-08
+  hidden rotation_3 0 1 0 6.664001874625056e-08
+  hidden rotation_4 0 1 0 6.664001874625056e-08
+  hidden rotation_5 0 -1 0 8.429369702178807e-08
+  hidden position_5_0 -6.754858048439247e-08
+  hidden position_5_1 -6.754856936728119e-08
+  hidden rotation_6 0 -1 0 6.664001874625056e-08
+  hidden rotation_7 0 -1 0 6.664001874625056e-08
+  translation 1.21 -1.02 0.67
+  name "leo1"
+  controller "<extern>"
+}
+DEF supervisor_robot Supervisor {
+  name "supervisor_robot"
+  controller "<extern>"
+}

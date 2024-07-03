@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="multi_robot" default="false" description="Start world with either one or all robots."/>
+    <arg name="sim_port" default="1234" description="Port used for the simulator communication. Relevant if multiple simulations are run at the same time"/>
+    <arg name="num_robots" default="4"
+         description="Number of robots for which a ROS controller is started. 1 if multi_robot=True "/>
+
+    <!-- source nessessary files for webots -->
+    <set_env name="WEBOTS_HOME" value="$(env WEBOTS_HOME /usr/local/webots)"/>
+    <set_env name="LD_LIBRARY_PATH" value="$(env LD_LIBRARY_PATH):$(env WEBOTS_HOME)/lib/controller"/>
+    <!-- Change the python version here if you want to use a different version of python -->
+    <set_env name="PYTHONPATH" value="$(env PYTHONPATH):$(env WEBOTS_HOME)/lib/controller/python310"/>
+
+    <let name="multi_robot_flag" value="$(eval '\'--multi-robot\' if \'$(var multi_robot)\'==\'true\' else \'\'')"/>
+
+    <node pkg="ros2_webots_sandbox" exec="start_simulator.py" name="ros2_webots_sandbox" output="screen" args="$(var multi_robot_flag)"/>
+    <node pkg="ros2_webots_sandbox" exec="start_webots_ros_supervisor.py" name="webots_ros_supervisor" output="screen" args="$(var multi_robot_flag)"/>
+
+    <group unless="$(var multi_robot)">
+        <include file="$(find-pkg-share ros2_webots_sandbox)/launch/single_robot_controller.launch">
+            <arg name="robot_type" value="leo"/>
+        </include>
+    </group>
+    <group if="$(var multi_robot)">
+        <group>
+            <push_ros_namespace namespace="leo1"/>
+            <include file="$(find-pkg-share ros2_webots_sandbox)/launch/single_robot_controller.launch">
+                <arg name="robot_name" value="leo1"/>
+                <arg name="robot_type" value="leo"/>
+                <arg name="tf_prefix" value="leo1/"/>
+                <arg name="sim_port" value="$(var sim_port)"/>
+                <arg name="void_controller" value="$(eval 'int(\'$(var num_robots)\') &lt; 1')"/>
+            </include>
+        </group>
+        <group>
+            <push_ros_namespace namespace="leo2"/>
+            <include file="$(find-pkg-share ros2_webots_sandbox)/launch/single_robot_controller.launch">
+                <arg name="robot_name" value="leo2"/>
+                <arg name="robot_type" value="leo"/>
+                <arg name="tf_prefix" value="leo2/"/>
+                <arg name="sim_port" value="$(var sim_port)"/>
+                <arg name="void_controller" value="$(eval 'int(\'$(var num_robots)\') &lt; 2')"/>
+            </include>
+        </group>
+        <group>
+            <push_ros_namespace namespace="unitree"/>
+            <include file="$(find-pkg-share ros2_webots_sandbox)/launch/single_robot_controller.launch">
+                <arg name="robot_name" value="unitree"/>
+                <arg name="robot_type" value="unitree"/>
+                <arg name="tf_prefix" value="unitree/"/>
+                <arg name="sim_port" value="$(var sim_port)"/>
+                <arg name="void_controller" value="$(eval 'int(\'$(var num_robots)\') &lt; 3')"/>
+            </include>
+        </group>
+        <group>
+            <push_ros_namespace namespace="exomy1"/>
+            <include file="$(find-pkg-share ros2_webots_sandbox)/launch/single_robot_controller.launch">
+                <arg name="robot_name" value="exomy1"/>
+                <arg name="robot_type" value="exomy"/>
+                <arg name="tf_prefix" value="exomy1/"/>
+                <arg name="sim_port" value="$(var sim_port)"/>
+                <arg name="void_controller" value="$(eval 'int(\'$(var num_robots)\') &lt; 4')"/>
+            </include>
+        </group>
+        <group>
+            <push_ros_namespace namespace="exomy2"/>
+            <include file="$(find-pkg-share ros2_webots_sandbox)/launch/single_robot_controller.launch">
+                <arg name="robot_name" value="exomy2"/>
+                <arg name="robot_type" value="exomy"/>
+                <arg name="tf_prefix" value="exomy2/"/>
+                <arg name="sim_port" value="$(var sim_port)"/>
+                <arg name="void_controller" value="$(eval 'int(\'$(var num_robots)\') &lt; 5')"/>
+            </include>
+        </group>
+    </group>
+</launch>
