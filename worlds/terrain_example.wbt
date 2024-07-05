@@ -1,0 +1,40 @@
+#VRML_SIM R2023b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "../protos/robots/leo_common/LeoSim.proto"
+EXTERNPROTO "../protos/supervisor/Supervisor.proto"
+EXTERNPROTO "../protos/maps/terrainmap.proto"
+
+WorldInfo {
+  info [
+    "Description: The sandbox environment with a single LEO Rover."
+    "Version 0.1"
+  ]
+  basicTimeStep 8
+  physicsDisableTime 0.1
+}
+Viewpoint {
+  orientation -0.04249727505610526 0.07473178140698625 0.9962977177834668 1.9298233561246898
+  position 101.52897590575373 91.00791751271508 -36.979017792692524
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+Pose {
+  children [
+    terrainmap {
+    }
+  ]
+}
+DEF leo1 LeoSim {
+  translation 94.72031598382209 98.76100251659449 -38.295539607476826
+  rotation 0.0014575061813624232 -0.017608002239159832 0.9998439047835802 -2.1536375173226077
+  name "leo1"
+  controller "<extern>"
+}
+DEF supervisor_robot Supervisor {
+  name "supervisor_robot"
+  controller "<extern>"
+}
