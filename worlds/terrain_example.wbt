@@ -13,6 +13,8 @@ WorldInfo {
   ]
   basicTimeStep 8
   physicsDisableTime 0.1
+  ERP 0.8
+  CFM 0.5
 }
 Viewpoint {
   orientation -0.04249727505610526 0.07473178140698625 0.9962977177834668 1.9298233561246898
