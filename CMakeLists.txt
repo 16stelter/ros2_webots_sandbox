@@ -17,7 +17,6 @@ find_package(urdf REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(rclpy REQUIRED)
 find_package(sensor_msgs REQUIRED)
-find_package(gazebo_msgs REQUIRED)
 
 set(INCLUDE_DIRS ${bitbots_msgs_INCLUDE_DIRS} ${rosgraph_msgs_INCLUDE_DIRS}
   ${std_msgs_INCLUDE_DIRS} ${ament_cmake_INCLUDE_DIRS}

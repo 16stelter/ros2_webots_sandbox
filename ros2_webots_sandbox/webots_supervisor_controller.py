@@ -3,8 +3,8 @@ from controller import Supervisor, Keyboard, Node
 import rclpy
 from rclpy.node import Node as RclpyNode
 from geometry_msgs.msg import Quaternion, Pose, Point, Twist
-from gazebo_msgs.msg import ModelStates
 from bitbots_msgs.srv import SetObjectPose, SetObjectPosition
+from bitbots_msgs.msg import ModelStates
 from rclpy.time import Time
 
 from rosgraph_msgs.msg import Clock
@@ -297,16 +297,5 @@ class SupervisorController:
                 twist.angular.y = ang_vel[1]
                 twist.angular.z = ang_vel[2]
                 msg.twist.append(twist)
-
-                head_node = robot_node.getFromProtoDef("head")
-                head_position = head_node.getPosition()
-                head_orientation = head_node.getOrientation()
-                head_orientation_quat = transforms3d.quaternions.mat2quat(np.reshape(head_orientation, (3, 3)))
-                head_pose = Pose()
-                head_pose.position = Point(x=head_position[0], y=head_position[1], z=head_position[2])
-                head_pose.orientation = Quaternion(x=head_orientation_quat[1], y=head_orientation_quat[2],
-                                                   z=head_orientation_quat[3], w=head_orientation_quat[0])
-                msg.name.append(robot_name + "_head")
-                msg.pose.append(head_pose)
 
             self.model_state_publisher.publish(msg)

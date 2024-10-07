@@ -23,9 +23,9 @@ class WebotsSim(Node):
             extra_args.update(["--batch", "--no-rendering"])
 
         if multi_robot:
-            world_name = "sandbox_all.wbt"
+            world_name = "terrain_example.wbt"
         else:
-            world_name = "sandbox_1.wbt"
+            world_name = "terrain_example.wbt"
 
         if headless:
             cmd = [

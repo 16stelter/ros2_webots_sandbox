@@ -43,33 +43,13 @@
             </include>
         </group>
         <group>
-            <push_ros_namespace namespace="unitree"/>
+            <push_ros_namespace namespace="exomy"/>
             <include file="$(find-pkg-share ros2_webots_sandbox)/launch/single_robot_controller.launch">
-                <arg name="robot_name" value="unitree"/>
-                <arg name="robot_type" value="unitree"/>
-                <arg name="tf_prefix" value="unitree/"/>
-                <arg name="sim_port" value="$(var sim_port)"/>
-                <arg name="void_controller" value="$(eval 'int(\'$(var num_robots)\') &lt; 3')"/>
-            </include>
-        </group>
-        <group>
-            <push_ros_namespace namespace="exomy1"/>
-            <include file="$(find-pkg-share ros2_webots_sandbox)/launch/single_robot_controller.launch">
-                <arg name="robot_name" value="exomy1"/>
+                <arg name="robot_name" value="exomy"/>
                 <arg name="robot_type" value="exomy"/>
-                <arg name="tf_prefix" value="exomy1/"/>
+                <arg name="tf_prefix" value="exomy/"/>
                 <arg name="sim_port" value="$(var sim_port)"/>
-                <arg name="void_controller" value="$(eval 'int(\'$(var num_robots)\') &lt; 4')"/>
-            </include>
-        </group>
-        <group>
-            <push_ros_namespace namespace="exomy2"/>
-            <include file="$(find-pkg-share ros2_webots_sandbox)/launch/single_robot_controller.launch">
-                <arg name="robot_name" value="exomy2"/>
-                <arg name="robot_type" value="exomy"/>
-                <arg name="tf_prefix" value="exomy2/"/>
-                <arg name="sim_port" value="$(var sim_port)"/>
-                <arg name="void_controller" value="$(eval 'int(\'$(var num_robots)\') &lt; 5')"/>
+                <arg name="void_controller" value="$(eval 'int(\'$(var num_robots)\') &lt; 2')"/>
             </include>
         </group>
     </group>

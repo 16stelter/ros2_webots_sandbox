@@ -32,7 +32,7 @@ print("Map size is: " + str(len(elevation)))
 with open(outfile_path, 'a') as f:
     f.write("#VRML_SIM R2023b utf8\n")
     f.write('PROTO terrainmap [\n]\n{\nSolid {\ncontactMaterial "floor"\n children [\nTransform {\nchildren [\n DEF WORLDGRID Shape {\n')
-    f.write('appearance PBRAppearance { \nbaseColor 0.7 0.25 0.0\nroughness 0.8\nmetalness 0\nbaseColorMap ImageTexture {\nurl ["./textures/white_noise.png"]\nfiltering 5\n}\ntextureTransform TextureTransform { scale 200 200 }\n }')
+    f.write('appearance PBRAppearance { \nbaseColor 0.25 0.25 0.25\nroughness 0.8\nmetalness 0\nbaseColorMap ImageTexture {\nurl ["./textures/white_noise.png"]\nfiltering 5\n}\ntextureTransform TextureTransform { scale 200 200 }\n }')
     f.write("geometry ElevationGrid { \n")
     f.write("height " + str(elevation) + "\n")
     f.write("xDimension " + str(xdim) + "\n")
