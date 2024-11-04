@@ -11,9 +11,7 @@ WorldInfo {
     "Description: The sandbox environment with a single LEO Rover."
     "Version 0.1"
   ]
-  ERP 0
-  basicTimeStep 8
-  physicsDisableTime 0.1
+  basicTimeStep 64
 }
 Viewpoint {
   orientation -0.016573999597881466 0.07522031955053762 0.9970291901765186 2.7259552625484806
