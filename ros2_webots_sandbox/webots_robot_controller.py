@@ -8,6 +8,7 @@ import rclpy
 from rclpy.node import Node as RclpyNode
 from rclpy.time import Time
 from sensor_msgs.msg import JointState, Imu, Image, CameraInfo
+from geometry_msgs.msg import Pose
 
 from bitbots_msgs.msg import JointCommand
 
@@ -34,6 +35,7 @@ class RobotController:
         self.ros_active = ros_active
         self.recognize = recognize
         self.camera_active = camera_active
+        self.use_gps = False
         self.foot_sensors_active = foot_sensors_active
         if robot_node is None:
             self.robot_node = Robot()
@@ -71,6 +73,8 @@ class RobotController:
             self.sensor_suffix = "_sensor"
             accel_name = "imu accelerometer"
             gyro_name = "imu gyro"
+            gps_name = ""
+            compass_name = ""
             camera_name = "camera"
 
         elif robot in ['darwin', 'robotis_op2']:
@@ -84,6 +88,8 @@ class RobotController:
             self.sensor_suffix = "S"
             accel_name = "Accelerometer"
             gyro_name = "Gyro"
+            gps_name = ""
+            compass_name = ""
             camera_name = "Camera"
         elif robot == 'nao':
             self.proto_motor_names = ["RShoulderPitch", "LShoulderPitch", "RShoulderRoll", "LShoulderRoll", "RElbowYaw",
@@ -97,6 +103,7 @@ class RobotController:
             self.sensor_suffix = "S"
             accel_name = "accelerometer"
             gyro_name = "gyro"
+            gps_name = ""
             camera_name = "CameraTop"
         elif robot == 'op3': #robotis
             self.proto_motor_names = ["ShoulderR", "ShoulderL", "ArmUpperR", "ArmUpperL", "ArmLowerR", "ArmLowerL",
@@ -109,6 +116,8 @@ class RobotController:
             self.sensor_suffix = "S"
             accel_name = "Accelerometer"
             gyro_name = "Gyro"
+            gps_name = ""
+            compass_name = ""
             camera_name = "Camera"
         elif robot == 'rfc':
             self.proto_motor_names = ["RightShoulderPitch [shoulder]", "LeftShoulderPitch [shoulder]",
@@ -124,6 +133,8 @@ class RobotController:
             self.sensor_suffix = "_sensor"
             accel_name = "Accelerometer"
             gyro_name = "Gyroscope"
+            gps_name = ""
+            compass_name = ""
             camera_name = "Camera"
         elif robot == 'gankenkun': #CITBrains
             self.proto_motor_names = ["right_shoulder_pitch_joint [shoulder]", "left_shoulder_pitch_joint [shoulder]",
@@ -138,6 +149,7 @@ class RobotController:
             self.sensor_suffix = "_sensor"
             accel_name = "accelerometer"
             gyro_name = "gyro"
+            gps_name = ""
             camera_name = "camera_sensor"
         elif robot == 'chape': #itandroids
             self.proto_motor_names = ["rightShoulderPitch[shoulder]", "leftShoulderPitch[shoulder]",
@@ -155,6 +167,8 @@ class RobotController:
             self.sensor_suffix = "_sensor"
             accel_name = "Accelerometer"
             gyro_name = "Gyro"
+            gps_name = ""
+            compass_name = ""
             camera_name = "Camera"
         elif robot == 'mrl_hsl':
             self.proto_motor_names = ["Shoulder-R [shoulder]", "UpperArm-R", "LowerArm-R", "Shoulder-L [shoulder]",
@@ -170,6 +184,8 @@ class RobotController:
             self.sensor_suffix = "S"
             accel_name = "Accelerometer"
             gyro_name = "Gyro"
+            gps_name = ""
+            compass_name = ""
             camera_name = "Camera"
         elif robot == 'nugus': #NUbots
             self.proto_motor_names = ["neck_yaw", "head_pitch", "left_hip_yaw", "left_hip_roll [hip]",
@@ -187,6 +203,8 @@ class RobotController:
             self.sensor_suffix = "_sensor"
             accel_name = "accelerometer"
             gyro_name = "gyroscope"
+            gps_name = ""
+            compass_name = ""
             camera_name = "left_camera"
         elif robot == 'sahrv74': #Starkit
             self.proto_motor_names = ["right_shoulder_pitch [shoulder]", "right_shoulder_roll", "right_elbow",
@@ -199,6 +217,8 @@ class RobotController:
             self.sensor_suffix = "_sensor"
             accel_name = "accelerometer"
             gyro_name = "gyro"
+            gps_name = ""
+            compass_name = ""
             camera_name = "left_camera"
         elif robot == 'bez': #UTRA
             self.proto_motor_names = ["head_motor_0", "head_motor_1", "right_leg_motor_0", "right_leg_motor_1 [hip]",
@@ -216,6 +236,8 @@ class RobotController:
             self.sensor_suffix = "_sensor"
             accel_name = "imu accelerometer"
             gyro_name = "imu gyro"
+            gps_name = ""
+            compass_name = ""
             camera_name = "camera"
         elif robot == 'leo': #LEO Rover
             self.proto_motor_names = ["rocker_L_joint", "wheel_FL_joint", "wheel_RL_joint", "rocker_R_joint",
@@ -224,6 +246,8 @@ class RobotController:
             self.sensor_suffix = "_sensor"
             accel_name = ""
             gyro_name = ""
+            gps_name = "gps"
+            compass_name = "compass"
             camera_name = "camera"
         elif robot == 'bittle': #Petoi Bittle
             self.proto_motor_names = ["left-back-shoulder-joint", "left-back-knee-joint", "left-front-shoulder-joint",
@@ -233,6 +257,8 @@ class RobotController:
             self.sensor_suffix = "_sensor"
             accel_name = ""
             gyro_name = ""
+            gps_name = ""
+            compass_name = ""
             camera_name = ""
         elif robot == 'unitree': #Unitree Go2 Edu
             self.proto_motor_names = ["FL_hip_joint", "FL_thigh_joint", "FL_calf_joint", "FR_hip_joint", "FR_thigh_joint", "FR_calf_joint",
@@ -241,6 +267,8 @@ class RobotController:
             self.sensor_suffix = "_sensor"
             accel_name = ""
             gyro_name = ""
+            gps_name = ""
+            compass_name = ""
             camera_name = ""
         elif robot == "exomy": # ExoMy Rover
             self.proto_motor_names = ["MRB_joint", "STR_LR_joint", "DRV_LR_joint", "STR_RR_joint", "DRV_RR_joint", "RFB_joint",
@@ -251,6 +279,8 @@ class RobotController:
             self.sensor_suffix = "_sensor"
             accel_name = "p3d inertial"
             gyro_name = "p3d gyro"
+            gps_name = ""
+            compass_name = ""
             camera_name = ""
         else:
             self.ros_node.get_logger().error("Robot type not supported: %s" % robot)
@@ -284,6 +314,12 @@ class RobotController:
         if(gyro_name != ""):
             self.gyro = self.robot_node.getDevice(gyro_name)
             self.gyro.enable(self.timestep)
+        if(gps_name != "" and compass_name != ""):
+            self.gps = self.robot_node.getDevice(gps_name)
+            self.gps.enable(self.timestep)
+            self.compass = self.robot_node.getDevice(compass_name)
+            self.compass.enable(self.timestep)
+            self.use_gps = True
         if self.is_wolfgang:
             self.accel_head = self.robot_node.getDevice("imu_head accelerometer")
             self.accel_head.enable(self.timestep)
@@ -308,6 +344,7 @@ class RobotController:
             self.pub_js = self.ros_node.create_publisher(JointState, base_ns + "joint_states", 1)
             self.pub_cam = self.ros_node.create_publisher(Image, base_ns + "camera/image_proc", 1)
             self.pub_cam_info = self.ros_node.create_publisher(CameraInfo, base_ns + "camera/camera_info", 1)
+            self.pub_odom = self.ros_node.create_publisher(Pose, base_ns + "odom", 1)
             self.ros_node.create_subscription(JointCommand, base_ns + "DynamixelController/command", self.command_cb, 1)
 
         if robot == "op3":
@@ -341,6 +378,8 @@ class RobotController:
             self.publish_camera()
         if self.recognize:
             self.save_recognition()
+        if self.use_gps:
+            self.publish_gps_odom()
         self.camera_counter = (self.camera_counter + 1) % CAMERA_DIVIDER
 
     def convert_joint_radiant_to_scaled(self, joint_name, pos):
@@ -499,6 +538,34 @@ class RobotController:
                            0.0, f_y, self.cam_info.height / 2, 0.0,
                            0.0, 0.0, 1.0, 0.0]
         self.pub_cam_info.publish(self.cam_info)
+
+    def publish_gps_odom(self):
+        position = self.gps.getValues()
+        orientation = self.compass.getValues()
+
+        odom = Pose()
+        odom.position.x = position[0]
+        odom.position.y = position[1]
+        odom.position.z = position[2]
+
+        roll = math.atan2(orientation[0], orientation[2])
+        pitch = math.asin(-orientation[1])
+        yaw =  math.atan2(orientation[1], orientation[2])
+
+        cy = math.cos(yaw * 0.5)
+        sy = math.sin(yaw * 0.5)
+        cp = math.cos(pitch * 0.5)
+        sp = math.sin(pitch * 0.5)
+        cr = math.cos(roll * 0.5)
+        sr = math.sin(roll * 0.5)
+
+        odom.orientation.w = cr * cp * cy + sr * sp * sy
+        odom.orientation.x = sr * cp * cy - cr * sp * sy
+        odom.orientation.y = cr * sp * cy + sr * cp * sy
+        odom.orientation.z = cr * cp * sy - sr * sp * cy
+
+        self.pub_odom.publish(odom)
+
 
     def save_recognition(self):
         if self.time - self.last_img_saved < 1.0:

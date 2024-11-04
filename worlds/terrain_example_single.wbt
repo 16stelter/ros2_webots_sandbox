@@ -1,0 +1,55 @@
+#VRML_SIM R2023b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "../protos/robots/leo_common/LeoSim.proto"
+EXTERNPROTO "../protos/supervisor/Supervisor.proto"
+EXTERNPROTO "../protos/maps/shackletonSTL.proto"
+
+WorldInfo {
+  info [
+    "Description: The sandbox environment with a single LEO Rover."
+    "Version 0.1"
+  ]
+  ERP 0
+  basicTimeStep 8
+  physicsDisableTime 0.1
+}
+Viewpoint {
+  orientation -0.016573999597881466 0.07522031955053762 0.9970291901765186 2.7259552625484806
+  position 106.59815158365555 95.75168666933777 13.251088211291535
+  follow "leo"
+  followType "None"
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+Pose {
+  children [
+    shackletonSTL {
+    }
+  ]
+}
+DEF leo1 LeoSim {
+  hidden position_2_0 -0.021709885067753492
+  hidden position_2_1 0.029134910323102985
+  hidden rotation_3 0.010854729362623043 -1.8800945202175408e-09 0.9999410856897842 3.1415929999795913
+  hidden position_3_0 -0.0004765817347093973
+  hidden position_3_1 -0.0011117513400620176
+  hidden rotation_4 0 1 0 0.00047658173437682434
+  hidden rotation_5 0 1 0 0.0011117513399187583
+  hidden rotation_6 0 1 0 0.029134910323106073
+  hidden position_6_0 0.004127989439480997
+  hidden position_6_1 -0.001121992597388886
+  hidden rotation_7 0 1 0 0.0041279894395136124
+  hidden rotation_8 0 -1 0 0.0011219925972406084
+  translation 92.79176109046676 96.99924058479264 12.785575436040483
+  rotation 0.02603864607576028 0.008672855775655347 0.999623314295558 -2.2494194316229406
+  name "leo1"
+  controller "<extern>"
+}
+DEF supervisor_robot Supervisor {
+  name "supervisor_robot"
+  controller "<extern>"
+}

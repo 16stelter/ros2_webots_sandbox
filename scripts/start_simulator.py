@@ -25,7 +25,7 @@ class WebotsSim(Node):
         if multi_robot:
             world_name = "terrain_example.wbt"
         else:
-            world_name = "terrain_example.wbt"
+            world_name = "terrain_example_single.wbt"
 
         if headless:
             cmd = [

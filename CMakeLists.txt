@@ -15,6 +15,7 @@ find_package(ament_cmake REQUIRED)
 find_package(bitbots_docs REQUIRED)
 find_package(urdf REQUIRED)
 find_package(nav_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
 find_package(rclpy REQUIRED)
 find_package(sensor_msgs REQUIRED)
 
@@ -28,7 +29,7 @@ link_directories(${LIBRARY_DIRS})
 
 set(LIBS ${bitbots_msgs_LIBRARIES} ${rosgraph_msgs_LIBRARIES}
   ${std_msgs_LIBRARIES} ${ament_cmake_LIBRARIES} ${bitbots_docs_LIBRARIES}
-  ${urdf_LIBRARIES} ${nav_msgs_LIBRARIES} ${rclpy_LIBRARIES}
+  ${urdf_LIBRARIES} ${nav_msgs_LIBRARIES} ${geometry_msgs_LIBRARIES} ${rclpy_LIBRARIES}
   ${sensor_msgs_LIBRARIES} ${gazebo_msgs_LIBRARIES})
 
 ament_export_dependencies(bitbots_msgs)
@@ -38,6 +39,7 @@ ament_export_dependencies(ament_cmake)
 ament_export_dependencies(bitbots_docs)
 ament_export_dependencies(urdf)
 ament_export_dependencies(nav_msgs)
+ament_export_dependencies(geometry_msgs)
 ament_export_dependencies(rclpy)
 ament_export_dependencies(sensor_msgs)
 ament_export_dependencies(gazebo_msgs)
